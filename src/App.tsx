@@ -99,7 +99,6 @@ function Navbar() {
 function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const targetTimeRef = useRef(0);
-  const isSeekingRef = useRef(false);
   const prevXRef = useRef<number | null>(null);
 
   const { displayed, done } = useTypewriter("Glad you stopped in. Good taste tends to find us. Now, what are we building?");
@@ -113,6 +112,7 @@ function App() {
 
   useEffect(() => {
     const SENSITIVITY = 0.8;
+    let animationFrameId: number;
 
     const handleMove = (clientX: number) => {
       if (!videoRef.current || isNaN(videoRef.current.duration)) return;
@@ -129,10 +129,6 @@ function App() {
       const offset = (delta / window.innerWidth) * SENSITIVITY * duration;
 
       targetTimeRef.current = Math.max(0, Math.min(duration, targetTimeRef.current + offset));
-
-      if (!isSeekingRef.current) {
-        performSeek();
-      }
     };
 
     const handleMouseMove = (e: MouseEvent) => handleMove(e.clientX);
@@ -149,40 +145,28 @@ function App() {
       }
     };
 
-    const performSeek = () => {
-      if (!videoRef.current) return;
-
-      if (Math.abs(videoRef.current.currentTime - targetTimeRef.current) < 0.05) {
-        return;
+    const updateVideoTime = () => {
+      if (videoRef.current && !isNaN(videoRef.current.duration)) {
+        const diff = targetTimeRef.current - videoRef.current.currentTime;
+        // Smooth easing (lerp) towards the target time
+        if (Math.abs(diff) > 0.01) {
+          videoRef.current.currentTime += diff * 0.15;
+        }
       }
-
-      isSeekingRef.current = true;
-      videoRef.current.currentTime = targetTimeRef.current;
-    };
-
-    const handleSeeked = () => {
-      isSeekingRef.current = false;
-      if (!videoRef.current) return;
-      if (Math.abs(videoRef.current.currentTime - targetTimeRef.current) >= 0.05) {
-        performSeek();
-      }
+      animationFrameId = requestAnimationFrame(updateVideoTime);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    const videoEl = videoRef.current;
-    if (videoEl) {
-      videoEl.addEventListener('seeked', handleSeeked);
-    }
+    
+    animationFrameId = requestAnimationFrame(updateVideoTime);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchstart', handleTouchStart);
-      if (videoEl) {
-        videoEl.removeEventListener('seeked', handleSeeked);
-      }
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
