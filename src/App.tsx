@@ -99,7 +99,6 @@ function Navbar() {
 function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const targetTimeRef = useRef(0);
-  const isSeekingRef = useRef(false);
   const prevXRef = useRef<number | null>(null);
 
   const { displayed, done } = useTypewriter("Glad you stopped in. Good taste tends to find us. Now, what are we building?");
