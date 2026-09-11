@@ -203,7 +203,7 @@ function App() {
       {/* Background Video */}
       <video
         ref={videoRef}
-        src="/Hero_MVP.mp4"
+        src="/Hero_MVP_optimized.mp4"
         className="fixed inset-0 w-full h-full object-cover z-0 pointer-events-none -scale-x-[1.15] scale-y-[1.15] origin-center"
         style={{ objectPosition: '80% right' }}
         muted
