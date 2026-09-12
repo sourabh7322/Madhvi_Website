@@ -314,7 +314,7 @@ function App() {
               onClick={copyEmail}
               className="cursor-pointer inline-flex items-center justify-center text-white bg-transparent border border-white rounded-full text-[14px] sm:text-[15px] px-4 sm:px-6 py-2 sm:py-2.5 whitespace-nowrap hover:bg-white hover:text-black transition-colors duration-200 gap-2 sm:gap-3 group"
             >
-              <span>Reach us: <span className="underline underline-offset-1 group-hover:no-underline">sourabhrawat77200@gmail.com</span></span>
+              <span>Reach us: <span className="underline underline-offset-1 group-hover:no-underline">madhvisingh844530@gmail.com</span></span>
               {copied ? (
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-400 group-hover:text-green-600 transition-colors">
                   <polyline points="20 6 9 17 4 12" />
